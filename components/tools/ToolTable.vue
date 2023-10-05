@@ -1,8 +1,8 @@
 <template lang="pug">
-v-row.tool-table.justify-center.mx-auto
+v-row.tool-table.justify-center
   v-card.pa-4.rounded-xl(outlined)
     v-card-title
-      p.mb-0 Tool Status
+      p.mb-0 UPM FSKTM Smart Intergrated Building Health Index
       v-spacer
     hr.mx-2
 
@@ -19,9 +19,9 @@ v-row.tool-table.justify-center.mx-auto
           pill
         )
           p.mb-0 {{ item.status }}
-          v-icon.ml-2(v-if="item.status === 'Need Maintenance'" small) mdi-wrench
-          v-icon.ml-2(v-if="item.status === 'Normal'" small) mdi-check-circle
-          v-icon.ml-2(v-if="item.status === 'Checking'" small) mdi-clock-time-eight
+          v-icon.ml-2(v-if="item.status === 'Moderate'" small) mdi-wrench
+          v-icon.ml-2(v-if="item.status === 'Excellent'" small) mdi-check-circle
+          v-icon.ml-2(v-if="item.status === 'Good'" small) mdi-clock-time-eight
 
       template(v-slot:item.action="{ item }")
         v-btn(
@@ -34,18 +34,18 @@ v-row.tool-table.justify-center.mx-auto
       template(v-slot:body.prepend)
           tr
             td.py-4
-              v-text-field(v-model="toolid" type="text" label="Tool ID" hide-details="auto" dense outlined)
+              v-text-field(v-model="toolid" type="text" label="Room ID" hide-details="auto" dense outlined)
             td.py-4
-              v-text-field(v-model="toolname" type="text" label="Tool Name" hide-details="auto" dense outlined)
+              v-text-field(v-model="toolname" type="text" label="Room Name" hide-details="auto" dense outlined)
             td.py-4
               v-text-field(v-model="time" type="text" label="Date & Time" hide-details="auto" dense outlined)
             td.py-4
-              v-select.select-category(:items="statusList" label="Select a status" v-model="status" hide-details="auto" multiple chips dense outlined)
+              v-select.select-category(:items="statusList" label="Select a health index" v-model="status" hide-details="auto" multiple chips dense outlined)
                 template(v-slot:selection="{ item, index }")
                   v-chip(:color="getColor(item)" outlined)
                     span {{ item }}
             td.py-4.text-center
-              v-icon.white--text mdi-magnify
+              v-icon.black--text mdi-magnify
 </template>
 
 <script>
@@ -58,18 +58,18 @@ export default {
       toolname: '',
       time: '',
       status: '',
-      statusList: ['Normal', 'Need Maintenance', 'Checking'],
+      statusList: ['Excellent', 'Moderate', 'Good'],
       headers: [
         {
-          text: 'Tools ID',
+          text: 'Room ID',
           align: 'start',
           sortable: false,
           value: 'id'
         },
-        { text: 'Tools Name', value: 'name' },
+        { text: 'Room Name', value: 'name' },
         { text: 'Date & Time', value: 'dt' },
         {
-          text: 'Status',
+          text: 'Health Index',
           align: 'center',
           value: 'status',
           filter: (value) => {
@@ -82,81 +82,81 @@ export default {
       desserts: [
         {
           id: 'T10-12118A',
-          name: 'SF 4-A22 CORDLESS DRILL DRIVER',
-          dt: '12:57 PM, 11/5/2023',
-          status: 'Need Maintenance',
+          name: 'EMBEDDED SYSTEMS LAB',
+          dt: '12:57 PM, 3/10/2023',
+          status: 'Excellent',
           action: ''
         },
         {
           id: 'T10-12119A',
-          name: 'TE 2-A22 CORDLESS ROTARY HAMMER',
-          dt: '06:48 PM, 24/1/2023',
-          status: 'Normal',
+          name: 'DATABASE LAB',
+          dt: '06:48 PM, 3/10/2023',
+          status: 'Excellent',
           action: ''
         },
         {
           id: 'T10-13418A',
-          name: 'SID 4-A22 CORDLESS IMPACT DRIVER',
-          dt: '06:48 PM, 24/1/2023',
-          status: 'Checking',
+          name: 'BILIK KULIAH 1',
+          dt: '06:48 PM, 3/10/2023',
+          status: 'Good',
           action: ''
         },
         {
           id: 'T10-12328A',
-          name: 'BX 3 02 FASTENING TOOL',
-          dt: '06:48 PM, 24/1/2023',
-          status: 'Normal',
+          name: 'BILIK KULIAH 2',
+          dt: '06:48 PM, 3/10/2023',
+          status: 'Excellent',
           action: ''
         },
         {
           id: 'T10-32342A',
-          name: 'BX 3-BT (02) CORDLESS FASTENING TOOL',
-          dt: '06:48 PM, 24/1/2023',
-          status: 'Normal',
+          name: 'OPERATING SYSTEMS',
+          dt: '06:48 PM, 3/10/2023',
+          status: 'Excellent',
           action: ''
         },
         {
           id: 'T12-12111A',
-          name: 'HDE 500-A22 CORDLESS',
-          dt: '06:48 PM, 24/1/2023',
-          status: 'Checking',
+          name: 'MULTIMEDIA ROOM',
+          dt: '06:48 PM, 3/10/2023',
+          status: 'Good',
           action: ''
         },
         {
           id: 'T13-11238A',
-          name: 'TE 2-A22 CORDLESS ROTARY HAMMER',
-          dt: '06:48 PM, 24/1/2023',
-          status: 'Need Maintenance',
-          action: ''
-        },
-        {
-          id: 'T20-75868A',
-          name: 'HDE 500-A22 CORDLESS',
-          dt: '06:48 PM, 24/1/2023',
-          status: 'Normal',
-          action: ''
-        },
-        {
-          id: 'T22-12118B',
-          name: 'TE 2-A22 CORDLESS ROTARY HAMMER',
-          dt: '06:48 PM, 24/1/2023',
-          status: 'Normal',
-          action: ''
-        },
-        {
-          id: 'T30-12118B',
-          name: 'TE 2-A22 CORDLESS ROTARY HAMMER',
-          dt: '06:48 PM, 24/1/2023',
-          status: 'Checking',
-          action: ''
-        },
-        {
-          id: 'T10-12118A',
-          name: 'SID 4-A22 CORDLESS IMPACT DRIVER',
-          dt: '06:48 PM, 24/1/2023',
-          status: 'Normal',
+          name: 'PEJABAT AM',
+          dt: '06:48 PM, 3/10/2023',
+          status: 'Moderate',
           action: ''
         }
+        // {
+        //   id: 'T20-75868A',
+        //   name: 'HDE 500-A22 CORDLESS',
+        //   dt: '06:48 PM, 24/1/2023',
+        //   status: 'Normal',
+        //   action: ''
+        // },
+        // {
+        //   id: 'T22-12118B',
+        //   name: 'TE 2-A22 CORDLESS ROTARY HAMMER',
+        //   dt: '06:48 PM, 24/1/2023',
+        //   status: 'Normal',
+        //   action: ''
+        // },
+        // {
+        //   id: 'T30-12118B',
+        //   name: 'TE 2-A22 CORDLESS ROTARY HAMMER',
+        //   dt: '06:48 PM, 24/1/2023',
+        //   status: 'Checking',
+        //   action: ''
+        // },
+        // {
+        //   id: 'T10-12118A',
+        //   name: 'SID 4-A22 CORDLESS IMPACT DRIVER',
+        //   dt: '06:48 PM, 24/1/2023',
+        //   status: 'Normal',
+        //   action: ''
+        // }
       ]
     }
   },
@@ -165,9 +165,9 @@ export default {
   },
   methods: {
     getColor (status) {
-      if (status === 'Normal') {
+      if (status === 'Excellent') {
         return this.$vuetify.theme.themes.light.green
-      } else if (status === 'Checking') {
+      } else if (status === 'Good') {
         return this.$vuetify.theme.themes.light.blue
       } else {
         return this.$vuetify.theme.themes.light.primary

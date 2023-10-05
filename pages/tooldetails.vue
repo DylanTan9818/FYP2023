@@ -1,16 +1,21 @@
 <template lang="pug">
-.tools-page.pa-0.ma-0.fill-width
-  upper-title.ma-0(:title="'Tools Status'" :titleClass="'dark-background'")
+.tools-page.pa-0.ma-0.fill-width.dark-background
   v-row.ma-0.pt-16.px-8.fill-width
+    v-row.px-7
+      v-card.rounded-xl.px-0.mb-4(outlined).flex
+        v-card-text.d-flex
+          img(:src="require('C:/Users/DylanTan9818/FYP2023/assets/upm.png')" :width="'300px'")
+          .d-grid.ml-2.px-15
+            h1.fw-600.secondary--text.mb-3 EMBEDDED SYSTEMS LAB
+            p.font-weight-regular.subtitle-2 Building Health Index Rating Reference
+            img(:src="require('C:/Users/DylanTan9818/FYP2023/assets/table.png')" :width="'350px'" :height="'150px'").px-0
     v-col(cols="9")
       tool-details.fill-height(:product="productData")
-    v-col(cols="3")
-      battery-status
     v-col(cols="9")
       //- tool-conditions
       line-chart
     v-col(cols="3")
-      tool-repair.fill-height
+      tool-repair
 </template>
 
 <script>
@@ -20,11 +25,10 @@ import UpperTitle from '../components/UpperTitle.vue'
 
 import ToolChartCopy from '../components/tools/ToolChartCopy.vue'
 import ToolConditions from '../components/tools/ToolConditions.vue'
-import ToolDetails from '../components/tools/ToolDetails.vue'
+// import ToolDetails from '../components/tools/ToolDetails.vue'
 import ToolRepair from '~/components/tools/ToolRepair.vue'
 import LineChart from '~/components/tools/LineChart.vue'
 import LineChartCopy from '~/components/tools/LineChartCopy.vue'
-import BatteryStatus from '~/components/tools/BatteryStatus.vue'
 
 export default {
   name: 'ToolsPage',
@@ -32,11 +36,9 @@ export default {
     UpperTitle,
     ToolChartCopy,
     ToolConditions,
-    ToolDetails,
     ToolRepair,
     LineChart,
-    LineChartCopy,
-    BatteryStatus
+    LineChartCopy
   },
   layout: 'default',
   data () {
@@ -66,6 +68,10 @@ export default {
   overflow-x: hidden;
   overflow-y: auto;
   width: 100% !important;
+}
+
+.dark-background {
+  background-color: #D2051E;
 }
 
 .fill-width {

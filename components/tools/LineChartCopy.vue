@@ -23,13 +23,21 @@ export default {
     // Initialize Firebase
     const firebaseConfig = {
       // Your Firebase config here
-      apiKey: 'AIzaSyAW-sZ7INqOCLi2hNeYAr0lt0_wjURBhFY',
-      authDomain: 'hilti-esp32.firebaseapp.com',
-      databaseURL: 'https://hilti-esp32-default-rtdb.asia-southeast1.firebasedatabase.app',
-      projectId: 'hilti-esp32',
-      storageBucket: 'hilti-esp32.appspot.com',
-      messagingSenderId: '502813794025',
-      appId: '1:502813794025:web:28955fa05a3c585a0d1a78'
+      // apiKey: 'AIzaSyAW-sZ7INqOCLi2hNeYAr0lt0_wjURBhFY',
+      // authDomain: 'hilti-esp32.firebaseapp.com',
+      // databaseURL: 'https://hilti-esp32-default-rtdb.asia-southeast1.firebasedatabase.app',
+      // projectId: 'hilti-esp32',
+      // storageBucket: 'hilti-esp32.appspot.com',
+      // messagingSenderId: '502813794025',
+      // appId: '1:502813794025:web:28955fa05a3c585a0d1a78'
+      apiKey: 'AIzaSyCVidPdGite1-F4F7vTtrC5pjWcYelkRzI',
+      authDomain: 'fyp2023-e3d45.firebaseapp.com',
+      databaseURL: 'https://fyp2023-e3d45-default-rtdb.asia-southeast1.firebasedatabase.app',
+      projectId: 'fyp2023-e3d45',
+      storageBucket: 'fyp2023-e3d45.appspot.com',
+      messagingSenderId: '252452635094',
+      appId: '1:252452635094:web:2615f12de00e1dabaea477',
+      measurementId: 'G-RM1N2Y0WXD'
     }
     firebase.initializeApp(firebaseConfig)
 
@@ -41,7 +49,7 @@ export default {
       const data = snapshot.val()
       this.temperatureData = Object.values(data.temperature)
       this.timestamps = Object.values(data.timestamp)
-      this.rpmData = Object.values(data.rpm)
+      this.rpmData = Object.values(data.lux)
       // Update the chart with the new data
       if (this.chart) {
         this.chart.data.datasets[0].data = this.temperatureData

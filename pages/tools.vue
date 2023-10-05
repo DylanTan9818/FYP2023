@@ -1,6 +1,9 @@
 <template lang="pug">
 .tools-page.pa-0.ma-0.fill-width
-  upper-title.ma-0(:title="'Tools'" :titleClass="'dark-background'" :icon="'bell'" :rightIconColor="$vuetify.theme.themes.light.tertiary")
+  v-row.ma-0.pt-8.justify-center
+    h1(style="color: white;").font-weight-bold.pb-4 UPM BUILDING HEALTH INDEX
+  v-row.ma-0.pt-8.justify-center
+    img(:src="require('C:/Users/DylanTan9818/FYP2023/assets/upm.png')" :width="'300px'").rounded-xl
   v-row.ma-0.pt-8.fill-width
     v-col(cols="12")
       tool-table.pt-12.align-center.px-4.pb-4
@@ -9,12 +12,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import ToolTable from '../components/tools/ToolTable.vue'
-import UpperTitle from '../components/UpperTitle.vue'
+// import UpperTitle from '../components/UpperTitle.vue'
 
 export default {
   name: 'ToolsPage',
   components: {
-    UpperTitle,
+    // UpperTitle,
     ToolTable
     // ToolChartCopy,
     // ToolConditions,
@@ -26,7 +29,7 @@ export default {
     return {
       // search: null
       productData: {
-        name: 'SF 4-A22 CORDLESS DRILL DRIVER',
+        name: 'EMBEDDED SYSTEMS',
         id: '1234',
         warranty: '2023-06-25',
         status: 'Normal',
@@ -51,7 +54,17 @@ export default {
   width: 100% !important;
 }
 
+.dark-background {
+  background-color: #D2051E;
+}
+
 .fill-width {
   width: 100% !important;
+}
+
+.fill-height {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 </style>

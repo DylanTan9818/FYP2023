@@ -1,7 +1,7 @@
 <template lang="pug">
 v-card.pa-4.rounded-xl(outlined)
   v-card-text
-    h2.fw-600.secondary--text.mb-4 Real Time Data
+    h2.fw-600.secondary--text.mb-4 Indoor Monitoring Parameters
     v-card.rounded-xl.mb-4(outlined)
       v-card-text
         .d-flex
@@ -13,35 +13,52 @@ v-card.pa-4.rounded-xl(outlined)
 
     v-card.rounded-xl.mb-4(outlined)
       v-card-text
-        .d-flex
-          v-img.icon(:src="require('../../assets/2.png')" width="50")
-          .d-grid.ml-2
-            h3.fw-600.secondary--text RPM (r/min)
-            p.font-weight-regular.subtitle-2 Today, 11/5/2023
-        canvas(ref="rpmchart" id="rpmchart" height="80")
+          .d-flex
+            v-img.icon(:src="require('../../assets/4.png')" width="50")
+            .d-grid.ml-2
+              h3.fw-600.secondary--text Humidity (%)
+              p.font-weight-regular.subtitle-2 Today, 13/8/2023
+          canvas(ref="humiditychart" id="humiditychart" height="80")
 
-    v-card.rounded-xl(outlined)
+    v-card.rounded-xl.mb-4(outlined)
       v-card-text
         .d-flex
-          v-img.icon(:src="require('../../assets/3.png')" width="50")
+          v-img.icon(:src="require('../../assets/5.png')" width="50")
           .d-grid.ml-2
-            h3.fw-600.secondary--text Vibration (Hz)
-            p.font-weight-regular.subtitle-2 Today, 11/5/2023
-        canvas(ref="vibrationchart" id="vibrationchart" height="80")
+            h3.fw-600.secondary--text Carbon Dioxide (ppm)
+            p.font-weight-regular.subtitle-2 Today, 13/8/2023
+        canvas(ref="ppmchart" id="ppmchart" height="80")
 
-  //- v-tabs.rounded-xl(vertical)
-  //-   v-tab(active)
-  //-     v-icon mdi-fire
-  //-   v-tab
-  //-     v-icon mdi-speedometer
-  //-   v-tab
-  //-     v-icon mdi-vibrate
+    v-card.rounded-xl.mb-4(outlined)
+      v-card-text
+        .d-flex
+          v-img.icon(:src="require('../../assets/carbon.png')" width="50")
+          .d-grid.ml-2
+            h3.fw-600.secondary--text Carbon Monoxide (ppm)
+            p.font-weight-regular.subtitle-2 Today, 13/8/2023
+        canvas(ref="cochart" id="cochart" height="80")
+
+    v-card.rounded-xl.mb-4(outlined)
+      v-card-text
+          .d-flex
+            v-img.icon(:src="require('../../assets/6.png')" width="50")
+            .d-grid.ml-2
+              h3.fw-600.secondary--text Dust Particles (pm2.5)
+              p.font-weight-regular.subtitle-2 Today, 13/8/2023
+          canvas(ref="pm25chart" id="pm25chart" height="80")
+
+    v-card.rounded-xl.mb-4(outlined)
+      v-card-text
+        .d-flex
+          v-img.icon(:src="require('../../assets/2.png')")
+          .d-grid.ml-2
+            h3.fw-600.secondary--text TVOC (ppm)
+            p.font-weight-regular.subtitle-2 Today, 13/8/2023
+        canvas(ref="luxchart" id="luxchart" height="80")
 
 </template>
 
 <script>
-// import firebase from 'firebase/app'
-// import 'firebase/database'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/database'
 import Chart from 'chart.js/dist/Chart.js'
@@ -51,62 +68,49 @@ export default {
     return {
       temperatureData: [],
       timestamps: [],
-      rpmData: [],
-      vibrationData: [],
+      // soundData: [],
+      // luxData: [],
+      coData: [],
+      ppmData: [],
+      humidityData: [],
+      pm25Data: [],
       chart: null,
-      rpmchart: null,
-      vibrationchart: null
+      luxchart: null,
+      soundchart: null,
+      cochart: null,
+      ppmchart: null,
+      humiditychart: null,
+      pm25chart: null
     }
   },
   mounted () {
     // Initialize Firebase
     const firebaseConfig = {
-      // Your Firebase config here
-      apiKey: 'AIzaSyAW-sZ7INqOCLi2hNeYAr0lt0_wjURBhFY',
-      authDomain: 'hilti-esp32.firebaseapp.com',
-      databaseURL: 'https://hilti-esp32-default-rtdb.asia-southeast1.firebasedatabase.app',
-      projectId: 'hilti-esp32',
-      storageBucket: 'hilti-esp32.appspot.com',
-      messagingSenderId: '502813794025',
-      appId: '1:502813794025:web:28955fa05a3c585a0d1a78'
+      apiKey: 'AIzaSyCVidPdGite1-F4F7vTtrC5pjWcYelkRzI',
+      authDomain: 'fyp2023-e3d45.firebaseapp.com',
+      databaseURL: 'https://fyp2023-e3d45-default-rtdb.asia-southeast1.firebasedatabase.app',
+      projectId: 'fyp2023-e3d45',
+      storageBucket: 'fyp2023-e3d45.appspot.com',
+      messagingSenderId: '252452635094',
+      appId: '1:252452635094:web:2615f12de00e1dabaea477',
+      measurementId: 'G-RM1N2Y0WXD'
     }
     firebase.initializeApp(firebaseConfig)
 
     // Get reference to the 'test' node in Firebase
-    // const temperatureRef = firebase.database().ref('test')
     const rpmRef = firebase.database().ref('test')
-
-    // Listen for changes in the temperature and timestamp data
-    // temperatureRef.on('value', (snapshot) => {
-    //   const data = snapshot.val()
-    //   this.temperatureData = Object.values(data.temperature).slice(-10)
-    //   this.timestamps = Object.values(data.timestamp).slice(-10)
-    //   this.rpmData = Object.values(data.rpm).slice(-10)
-    //   this.vibrationData = Object.values(data.vibrate).slice(-10)
-
-    //   // // Keep only the last 10 elements in the arrays
-    //   // if (this.temperatureData.length > 10) {
-    //   //   this.temperatureData = this.temperatureData.slice(-10)
-    //   //   this.timestamps = this.timestamps.slice(-10)
-    //   // }
-
-    //   // Update the chart with the new data
-    //   if (this.tempChart) {
-    //     this.tempChart.data.datasets[0].data = this.temperatureData
-    //     this.tempChart.data.labels = this.timestamps
-    //     this.tempChart.update()
-    //   } else {
-    //     this.createTempChart()
-    //   }
-    // })
 
     // Listen for changes in the temperature and timestamp data
     rpmRef.on('value', (snapshot) => {
       const data = snapshot.val()
       this.temperatureData = Object.values(data.temperature).slice(-10)
       this.timestamps = Object.values(data.timestamp).slice(-10)
-      this.rpmData = Object.values(data.rpm).slice(-10)
-      this.vibrationData = Object.values(data.vibrate).slice(-10)
+      // this.soundData = Object.values(data.sound).slice(-10)
+      this.luxData = Object.values(data.tvoc).slice(-10)
+      this.coData = Object.values(data.carbon_monoxide).slice(-10)
+      this.humidityData = Object.values(data.humidity).slice(-10)
+      this.ppmData = Object.values(data.co2).slice(-10)
+      this.pm25Data = Object.values(data.pm25).slice(-10)
 
       // // Keep only the last 10 elements in the arrays
       // if (this.rpmData.length > 10) {
@@ -124,22 +128,58 @@ export default {
         this.createTempChart()
       }
 
+      // // Update the chart with the new data
+      // if (this.soundchart) {
+      //   this.soundchart.data.datasets[0].data = this.soundData
+      //   this.soundchart.data.labels = this.timestamps
+      //   this.soundchart.update()
+      // } else {
+      //   this.createSoundChart()
+      // }
+
       // Update the chart with the new data
-      if (this.rpmchart) {
-        this.rpmchart.data.datasets[0].data = this.rpmData
-        this.rpmchart.data.labels = this.timestamps
-        this.rpmchart.update()
+      if (this.luxchart) {
+        this.luxchart.data.datasets[0].data = this.luxData
+        this.luxchart.data.labels = this.timestamps
+        this.luxchart.update()
       } else {
-        this.createRpmChart()
+        this.createLuxChart()
       }
 
       // Update the chart with the new data
-      if (this.vibrationchart) {
-        this.vibrationchart.data.datasets[0].data = this.vibrationData
-        this.vibrationchart.data.labels = this.timestamps
-        this.vibrationchart.update()
+      if (this.cochart) {
+        this.cochart.data.datasets[0].data = this.coData
+        this.cochart.data.labels = this.timestamps
+        this.cochart.update()
       } else {
-        this.createVibrationChart()
+        this.createCoChart()
+      }
+
+      // Update the chart with the new data
+      if (this.ppm) {
+        this.ppm.data.datasets[0].data = this.ppmData
+        this.ppm.data.labels = this.timestamps
+        this.ppm.update()
+      } else {
+        this.createPpmChart()
+      }
+
+      // Update the chart with the new data
+      if (this.humidity) {
+        this.humidity.data.datasets[0].data = this.humidityData
+        this.humidity.data.labels = this.timestamps
+        this.humidity.update()
+      } else {
+        this.createHumidityChart()
+      }
+
+      // Update the chart with the new data
+      if (this.pm25) {
+        this.pm25.data.datasets[0].data = this.pm25Data
+        this.pm25.data.labels = this.timestamps
+        this.pm25.update()
+      } else {
+        this.createPm25Chart()
       }
     })
   },
@@ -186,21 +226,21 @@ export default {
         }
       })
     },
-    createRpmChart () {
-      const ctx = document.getElementById('rpmchart').getContext('2d')
+    createLuxChart () {
+      const ctx = document.getElementById('luxchart').getContext('2d')
 
       const gradient = ctx.createLinearGradient(0, 0, 0, 300)
       gradient.addColorStop(0, 'rgba(24, 144, 255, 1)')
       gradient.addColorStop(1, 'rgba(24, 144, 255, 0)')
 
-      this.rpmchart = new Chart(ctx, {
+      this.luxchart = new Chart(ctx, {
         type: 'line',
         data: {
           labels: this.timestamps,
           datasets: [
             {
-              label: 'Rpm',
-              data: this.rpmData,
+              label: 'TVOC',
+              data: this.luxData,
               borderColor: '#1890FF',
               backgroundColor: gradient
             }
@@ -228,22 +268,190 @@ export default {
         }
       })
     },
-    createVibrationChart () {
-      const ctx = document.getElementById('vibrationchart').getContext('2d')
+    // createSoundChart () {
+    //   const ctx = document.getElementById('soundchart').getContext('2d')
+
+    //   const gradient = ctx.createLinearGradient(0, 0, 0, 300)
+    //   gradient.addColorStop(0, 'rgba(82, 196, 26, 1)')
+    //   gradient.addColorStop(1, 'rgba(82, 196, 26, 0)')
+
+    //   this.soundchart = new Chart(ctx, {
+    //     type: 'line',
+    //     data: {
+    //       labels: this.timestamps,
+    //       datasets: [
+    //         {
+    //           label: 'Sound',
+    //           data: this.soundData,
+    //           borderColor: '#52C41A',
+    //           backgroundColor: gradient
+    //         }
+    //       ]
+    //     },
+    //     options: {
+    //       scales: {
+    //         yAxes: [{
+    //           gridLines: {
+    //             display: false
+    //           },
+    //           ticks: {
+    //             beginAtZero: true
+    //           }
+    //         }],
+    //         xAxes: [{
+    //           gridLines: {
+    //             display: false
+    //           },
+    //           ticks: {
+    //             beginAtZero: true
+    //           }
+    //         }]
+    //       }
+    //     }
+    //   })
+    // },
+    createCoChart () {
+      const ctx = document.getElementById('cochart').getContext('2d')
 
       const gradient = ctx.createLinearGradient(0, 0, 0, 300)
-      gradient.addColorStop(0, 'rgba(82, 196, 26, 1)')
-      gradient.addColorStop(1, 'rgba(82, 196, 26, 0)')
+      gradient.addColorStop(0, 'rgba(202, 209, 111, 1)')
+      gradient.addColorStop(1, 'rgba(202, 209, 111, 0)')
 
-      this.vibrationchart = new Chart(ctx, {
+      this.cochart = new Chart(ctx, {
         type: 'line',
         data: {
           labels: this.timestamps,
           datasets: [
             {
-              label: 'Vibration',
-              data: this.vibrationData,
-              borderColor: '#52C41A',
+              label: 'Carbon Monoxide',
+              data: this.coData,
+              borderColor: '#CAD16F',
+              backgroundColor: gradient
+            }
+          ]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              gridLines: {
+                display: false
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }],
+            xAxes: [{
+              gridLines: {
+                display: false
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      })
+    },
+    createPpmChart () {
+      const ctx = document.getElementById('ppmchart').getContext('2d')
+
+      const gradient = ctx.createLinearGradient(0, 0, 0, 300)
+      gradient.addColorStop(0, 'rgba(205, 124, 255, 1)')
+      gradient.addColorStop(1, 'rgba(205, 124, 255, 0)')
+
+      this.ppmchart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: this.timestamps,
+          datasets: [
+            {
+              label: 'Carbon Dioxide',
+              data: this.ppmData,
+              borderColor: '#CD7CFF',
+              backgroundColor: gradient
+            }
+          ]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              gridLines: {
+                display: false
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }],
+            xAxes: [{
+              gridLines: {
+                display: false
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      })
+    },
+    createHumidityChart () {
+      const ctx = document.getElementById('humiditychart').getContext('2d')
+
+      const gradient = ctx.createLinearGradient(0, 0, 0, 300)
+      gradient.addColorStop(0, 'rgba(255, 140, 154, 1)')
+      gradient.addColorStop(1, 'rgba(255, 140, 154, 0)')
+
+      this.humiditychart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: this.timestamps,
+          datasets: [
+            {
+              label: 'Humidity',
+              data: this.humidityData,
+              borderColor: '#FF8C9A',
+              backgroundColor: gradient
+            }
+          ]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              gridLines: {
+                display: false
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }],
+            xAxes: [{
+              gridLines: {
+                display: false
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      })
+    },
+    createPm25Chart () {
+      const ctx = document.getElementById('pm25chart').getContext('2d')
+
+      const gradient = ctx.createLinearGradient(0, 0, 0, 300)
+      gradient.addColorStop(0, 'rgba(255, 209, 140, 1)')
+      gradient.addColorStop(1, 'rgba(255, 209, 140, 0)')
+
+      this.humiditychart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: this.timestamps,
+          datasets: [
+            {
+              label: 'pm2.5',
+              data: this.pm25Data,
+              borderColor: '#FFD18C',
               backgroundColor: gradient
             }
           ]

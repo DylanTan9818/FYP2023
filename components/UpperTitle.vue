@@ -1,15 +1,7 @@
 <template lang="pug">
-  v-row.py-4.pl-4.upper-title(dense :class="titleClass")
+  v-row.py-2.pl-4.upper-title(dense :class="titleClass")
     v-col(:cols="10")
-      h3.font-weight-medium(:class="textColor") {{ title }}
-    v-col.text-right.pr-4(:cols="2")
-      f-icon.notification.pt-10.pr-8(
-        :icon-name="icon"
-        :icon-fill="rightIconColor ?? iconColor"
-        :border="border"
-        @click="emitClick()"
-      )
-
+      h1.font-weight-bold(:class="textColor") {{ title }}
 </template>
 
 <script>
