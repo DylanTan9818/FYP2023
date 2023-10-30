@@ -5,9 +5,16 @@
       ApexCharts.d-flex.justify-space-around.pt-2(type="donut" :options="chartOptions" :series="series" width="250" height="250")
 
     v-card-text.pt-0(class="text-center")
+      h2.fw-600.secondary--text.mb-2 Accuracy
+      .data-container
+      h1.fw-600.primary--text.mb-5 {{ series[0]  }} %
       h2.fw-600.secondary--text.mb-2 Health Index
-      h2.primary--text.mb-4 Excellent
-
+      //- h2.fw-600.secondary--text.mb-2 Excellent
+      h2.primary--text.mb-4 {{ healthIndexPrediction }}
+      h2.fw-600.secondary--text.mb-2 Recommendations
+      //- h2.fw-600.secondary--text.mb-2 Excellent
+      h2.primary--text.mb-10 {{ recommendations }}
+      button.styled-button.mb-4(@click="predict(coData[0], ppmData[0], humidityData[0], pm25Data[0], temperatureData[0], tvocData[0])") Predict Health Index
       h2.fw-600.secondary--text.mb-2 Date
       h3.secondary--text {{currentDate}}
 
@@ -69,7 +76,9 @@ export default {
       humidityData: 0,
       tvocData: 0,
       pm25Data: 0,
-      series: [92.0, 8.0],
+      recommendations: '',
+      healthIndexPrediction: '',
+      series: [0.0, 100.0],
       chartOptions: {
         chart: {
           type: 'donut'
@@ -86,20 +95,22 @@ export default {
               labels: {
                 show: true,
                 total: {
-                  label: 'Accuracy',
+                  // label: 'Accuracy',
                   showAlways: true,
                   show: true,
                   color: '#333333',
                   fontSize: '20px',
                   fontWeight: '600',
                   formatter: function (value) {
-                    const t = 92.0
-                    return t + '%'
+                    // const t = 92.0
+                    // return t + '%'
+                    const t = 'Accuracy'
+                    return t
                   }
                 },
                 value: {
                   color: '#D2051E',
-                  fontSize: '28px',
+                  fontSize: '18px',
                   fontWeight: '600'
                 }
               }
@@ -158,7 +169,32 @@ export default {
       const today = new Date()
       const options = { year: 'numeric', month: 'long', day: 'numeric' }
       this.currentDate = today.toLocaleDateString(undefined, options)
-    }
+    },
+    async predict (a, b, c, d, e, f) {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/predict', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            carbon_monoxide: a,
+            co2: b,
+            humidity: c,
+            pm25: d,
+            temperature: e,
+            tvoc: f
+            // Add other features as needed
+          })
+        })
+        const result = await response.json()
+        this.healthIndexPrediction = result.prediction
+        this.series = [result.score * 100, 100 - result.score * 100]
+        this.recommendations = result.recommendation
+      } catch (error) {
+        this.healthIndexPrediction = error
+      }
+    },
   }
 }
 </script>
@@ -166,5 +202,19 @@ export default {
 <style scoped>
 .fw-600 {
   font-weight: 600 !important;
+}
+.styled-button {
+  background-color: #FF0000; /* Green background color */
+  color: white; /* White text color */
+  padding: 10px 20px; /* Padding to increase button size */
+  border: none; /* Remove the border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Add a pointer cursor on hover */
+  font-size: 16px; /* Font size */
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+.styled-button:hover {
+  background-color: #FF0000; /* Darker green on hover */
 }
 </style>

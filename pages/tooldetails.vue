@@ -4,11 +4,28 @@
     v-row.px-7
       v-card.rounded-xl.px-0.mb-4(outlined).flex
         v-card-text.d-flex
-          img(:src="require('C:/Users/DylanTan9818/FYP2023/assets/upm.png')" :width="'300px'")
+          img(:src="require('C:/Users/DylanTan9818/FYP2023/assets/upm.png')" :width="'400px'")
           .d-grid.ml-2.px-15
             h1.fw-600.secondary--text.mb-3 EMBEDDED SYSTEMS LAB
             p.font-weight-regular.subtitle-2 Building Health Index Rating Reference
-            img(:src="require('C:/Users/DylanTan9818/FYP2023/assets/table.png')" :width="'350px'" :height="'150px'").px-0
+            table.my-table
+              thead
+                tr
+                  th.my-header-class Classification
+                  th.my-header-class Score Range (%)
+              tbody
+                tr
+                  td Excellent
+                  td 80-100
+                tr
+                  td Good
+                  td 70-79
+                tr
+                  td Moderate
+                  td 50-69
+                tr
+                  td Unhealthy
+                  td 0-49
     v-col(cols="9")
       tool-details.fill-height(:product="productData")
     v-col(cols="9")
@@ -77,4 +94,39 @@ export default {
 .fill-width {
   width: 100% !important;
 }
+
+/* Style the table */
+.my-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 20px 0;
+}
+
+/* Style the table headers */
+.my-table th {
+  background-color: #D2051E;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+}
+
+/* Style the table cells */
+.my-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  font-weight: bold;
+  text-align: left;
+}
+
+/* Style even rows with a background color */
+.my-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Style table on hover */
+.my-table tr:hover {
+  background-color: #ddd;
+}
+
 </style>

@@ -84,7 +84,7 @@ export default {
           id: 'T10-12118A',
           name: 'EMBEDDED SYSTEMS LAB',
           dt: '12:57 PM, 3/10/2023',
-          status: 'Excellent',
+          status: 'Moderate',
           action: ''
         },
         {
@@ -163,7 +163,16 @@ export default {
   computed: {
 
   },
+  mounted () {
+    this.getCurrentDate()
+  },
   methods: {
+    getCurrentDate () {
+      const now = new Date()
+      for (let i = 0; i < this.desserts.length; i++) {
+        this.desserts[i].dt = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + '   ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds()
+      }
+    },
     getColor (status) {
       if (status === 'Excellent') {
         return this.$vuetify.theme.themes.light.green
