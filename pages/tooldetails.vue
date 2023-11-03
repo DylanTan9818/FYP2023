@@ -4,7 +4,7 @@
     v-row.px-7
       v-card.rounded-xl.px-0.mb-4(outlined).flex
         v-card-text.d-flex
-          img(:src="require('C:/Users/DylanTan9818/FYP2023/assets/upm.png')" :width="'400px'")
+          img(:src="require('../assets/upm.png')" :width="'400px'")
           .d-grid.ml-2.px-15
             h1.fw-600.secondary--text.mb-3 EMBEDDED SYSTEMS LAB
             p.font-weight-regular.subtitle-2 Building Health Index Rating Reference
