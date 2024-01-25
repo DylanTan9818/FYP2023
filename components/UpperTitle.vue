@@ -6,12 +6,10 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import FIcon from './fincare-components/FIcon.vue'
 
 export default {
   name: 'UpperTitle',
   components: {
-    FIcon
   },
   props: {
     title: {

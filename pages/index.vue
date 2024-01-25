@@ -7,11 +7,10 @@ export default {
   layout: 'default',
   data () {
     return {
-      // logoPath: require('../assets/logo/FincareLogo2.png')
     }
   },
   created () {
-    setTimeout(() => this.$router.push({ path: '/tools' }), 1000)
+    setTimeout(() => this.$router.push({ path: '/home' }), 1000)
   },
   methods: {
 

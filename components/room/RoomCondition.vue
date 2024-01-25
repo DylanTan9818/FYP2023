@@ -9,10 +9,8 @@
       .data-container
       h1.fw-600.primary--text.mb-5 {{ series[0]  }} %
       h2.fw-600.secondary--text.mb-2 Health Index
-      //- h2.fw-600.secondary--text.mb-2 Excellent
       h2.primary--text.mb-4 {{ healthIndexPrediction }}
       h2.fw-600.secondary--text.mb-2 Recommendations
-      //- h2.fw-600.secondary--text.mb-2 Excellent
       h2.primary--text.mb-10 {{ recommendations }}
       button.styled-button.mb-4(@click="predict(coData[0], ppmData[0], humidityData[0], pm25Data[0], temperatureData[0], tvocData[0])") Predict Health Index
       h2.fw-600.secondary--text.mb-2 Date
@@ -58,7 +56,7 @@
           v-img.icon(:src="require('../../assets/2.png')" width="70").mb-1
           h2.secondary--text.fw-600.mb-5 TVOC
           .data-container
-          h1.fw-600.primary--text {{ tvocData[0] }} ppm
+          h1.fw-600.primary--text {{ tvocData[0]/1000 }} ppm
 
 </template>
 
@@ -95,15 +93,12 @@ export default {
               labels: {
                 show: true,
                 total: {
-                  // label: 'Accuracy',
                   showAlways: true,
                   show: true,
                   color: '#333333',
                   fontSize: '20px',
                   fontWeight: '600',
                   formatter: function (value) {
-                    // const t = 92.0
-                    // return t + '%'
                     const t = 'Accuracy'
                     return t
                   }
@@ -183,7 +178,8 @@ export default {
             humidity: c,
             pm25: d,
             temperature: e,
-            tvoc: f
+            tvoc: f/1000,
+            ans: ''
             // Add other features as needed
           })
         })
@@ -194,7 +190,7 @@ export default {
       } catch (error) {
         this.healthIndexPrediction = error
       }
-    },
+    }
   }
 }
 </script>

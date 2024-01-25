@@ -6,7 +6,6 @@ v-row.tool-table.justify-center
       v-spacer
     hr.mx-2
 
-    //- Datatable
     v-data-table(
       :headers="headers"
       :items="desserts"
@@ -27,7 +26,7 @@ v-row.tool-table.justify-center
         v-btn(
           icon
           :color="$vuetify.theme.themes.light.primary"
-          :to="'/tooldetails'"
+          :to="'/monitor_dashboard'"
         )
           v-icon mdi-magnify
 
@@ -58,7 +57,7 @@ export default {
       toolname: '',
       time: '',
       status: '',
-      statusList: ['Excellent', 'Moderate', 'Good'],
+      statusList: ['Excellent', 'Moderate', 'Good','Poor'],
       headers: [
         {
           text: 'Room ID',
@@ -129,34 +128,6 @@ export default {
           status: 'Moderate',
           action: ''
         }
-        // {
-        //   id: 'T20-75868A',
-        //   name: 'HDE 500-A22 CORDLESS',
-        //   dt: '06:48 PM, 24/1/2023',
-        //   status: 'Normal',
-        //   action: ''
-        // },
-        // {
-        //   id: 'T22-12118B',
-        //   name: 'TE 2-A22 CORDLESS ROTARY HAMMER',
-        //   dt: '06:48 PM, 24/1/2023',
-        //   status: 'Normal',
-        //   action: ''
-        // },
-        // {
-        //   id: 'T30-12118B',
-        //   name: 'TE 2-A22 CORDLESS ROTARY HAMMER',
-        //   dt: '06:48 PM, 24/1/2023',
-        //   status: 'Checking',
-        //   action: ''
-        // },
-        // {
-        //   id: 'T10-12118A',
-        //   name: 'SID 4-A22 CORDLESS IMPACT DRIVER',
-        //   dt: '06:48 PM, 24/1/2023',
-        //   status: 'Normal',
-        //   action: ''
-        // }
       ]
     }
   },

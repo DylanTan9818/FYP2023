@@ -6,23 +6,17 @@
     img(:src="require('../assets/upm.png')" :width="'300px'").rounded-xl
   v-row.ma-0.pt-8.fill-width
     v-col(cols="12")
-      tool-table.pt-12.align-center.px-4.pb-4
+      room-table.pt-12.align-center.px-4.pb-4
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import ToolTable from '../components/tools/ToolTable.vue'
-// import UpperTitle from '../components/UpperTitle.vue'
+import RoomTable from '../components/room/RoomTable.vue'
 
 export default {
   name: 'ToolsPage',
   components: {
-    // UpperTitle,
-    ToolTable
-    // ToolChartCopy,
-    // ToolConditions,
-    // ToolDetails,
-    // ToolRepair
+    RoomTable
   },
   layout: 'default',
   data () {

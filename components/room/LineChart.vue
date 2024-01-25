@@ -52,7 +52,7 @@ v-card.pa-4.rounded-xl(outlined)
         .d-flex
           v-img.icon(:src="require('../../assets/2.png')")
           .d-grid.ml-2
-            h3.fw-600.secondary--text TVOC (ppm)
+            h3.fw-600.secondary--text TVOC (ppb)
             p.font-weight-regular.subtitle-2 Today, 13/8/2023
         canvas(ref="luxchart" id="luxchart" height="80")
 
@@ -68,8 +68,6 @@ export default {
     return {
       temperatureData: [],
       timestamps: [],
-      // soundData: [],
-      // luxData: [],
       coData: [],
       ppmData: [],
       humidityData: [],
@@ -105,19 +103,11 @@ export default {
       const data = snapshot.val()
       this.temperatureData = Object.values(data.temperature).slice(-10)
       this.timestamps = Object.values(data.timestamp).slice(-10)
-      // this.soundData = Object.values(data.sound).slice(-10)
       this.luxData = Object.values(data.tvoc).slice(-10)
       this.coData = Object.values(data.carbon_monoxide).slice(-10)
       this.humidityData = Object.values(data.humidity).slice(-10)
       this.ppmData = Object.values(data.co2).slice(-10)
       this.pm25Data = Object.values(data.pm25).slice(-10)
-
-      // // Keep only the last 10 elements in the arrays
-      // if (this.rpmData.length > 10) {
-      //   this.rpmData = this.rpmData.slice(-10)
-      //   this.timestamps = this.timestamps.slice(-10)
-      //   this.vibrationData = this.vibrationData.slice(-10)
-      // }
 
       // Update the chart with the new data
       if (this.chart) {
@@ -127,15 +117,6 @@ export default {
       } else {
         this.createTempChart()
       }
-
-      // // Update the chart with the new data
-      // if (this.soundchart) {
-      //   this.soundchart.data.datasets[0].data = this.soundData
-      //   this.soundchart.data.labels = this.timestamps
-      //   this.soundchart.update()
-      // } else {
-      //   this.createSoundChart()
-      // }
 
       // Update the chart with the new data
       if (this.luxchart) {
@@ -268,48 +249,6 @@ export default {
         }
       })
     },
-    // createSoundChart () {
-    //   const ctx = document.getElementById('soundchart').getContext('2d')
-
-    //   const gradient = ctx.createLinearGradient(0, 0, 0, 300)
-    //   gradient.addColorStop(0, 'rgba(82, 196, 26, 1)')
-    //   gradient.addColorStop(1, 'rgba(82, 196, 26, 0)')
-
-    //   this.soundchart = new Chart(ctx, {
-    //     type: 'line',
-    //     data: {
-    //       labels: this.timestamps,
-    //       datasets: [
-    //         {
-    //           label: 'Sound',
-    //           data: this.soundData,
-    //           borderColor: '#52C41A',
-    //           backgroundColor: gradient
-    //         }
-    //       ]
-    //     },
-    //     options: {
-    //       scales: {
-    //         yAxes: [{
-    //           gridLines: {
-    //             display: false
-    //           },
-    //           ticks: {
-    //             beginAtZero: true
-    //           }
-    //         }],
-    //         xAxes: [{
-    //           gridLines: {
-    //             display: false
-    //           },
-    //           ticks: {
-    //             beginAtZero: true
-    //           }
-    //         }]
-    //       }
-    //     }
-    //   })
-    // },
     createCoChart () {
       const ctx = document.getElementById('cochart').getContext('2d')
 

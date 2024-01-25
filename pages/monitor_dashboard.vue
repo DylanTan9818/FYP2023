@@ -24,15 +24,14 @@
                   td Moderate
                   td 50-69
                 tr
-                  td Unhealthy
+                  td Poor
                   td 0-49
+
+          ChatBot
     v-col(cols="9")
-      tool-details.fill-height(:product="productData")
-    v-col(cols="9")
-      //- tool-conditions
       line-chart
     v-col(cols="3")
-      tool-repair
+      room-condition
 </template>
 
 <script>
@@ -40,35 +39,21 @@ import { mapGetters } from 'vuex'
 
 import UpperTitle from '../components/UpperTitle.vue'
 
-import ToolChartCopy from '../components/tools/ToolChartCopy.vue'
-import ToolConditions from '../components/tools/ToolConditions.vue'
-// import ToolDetails from '../components/tools/ToolDetails.vue'
-import ToolRepair from '~/components/tools/ToolRepair.vue'
-import LineChart from '~/components/tools/LineChart.vue'
-import LineChartCopy from '~/components/tools/LineChartCopy.vue'
+import RoomCondition from '~/components/room/RoomCondition.vue'
+import LineChart from '~/components/room/LineChart.vue'
+import ChatBot from '~/components/room/ChatBot.vue'
 
 export default {
   name: 'ToolsPage',
   components: {
     UpperTitle,
-    ToolChartCopy,
-    ToolConditions,
-    ToolRepair,
+    RoomCondition,
     LineChart,
-    LineChartCopy
+    ChatBot
   },
   layout: 'default',
   data () {
     return {
-      // search: null
-      productData: {
-        name: 'SF 4-A22 CORDLESS DRILL DRIVER',
-        id: 'T10-12118A',
-        warranty: '2023-06-25',
-        status: 'Normal',
-        checktime: '12:57 PM, 11/5/2023',
-        image: 'https://shorturl.at/MPRV6'
-      }
     }
   },
   computed: {
